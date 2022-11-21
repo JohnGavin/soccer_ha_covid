@@ -1,24 +1,24 @@
 
-library(tidyverse)
-setwd(here(
-  '/Users/jbg/Library/Application Support/Code/User/globalStorage/github.remotehub/',
-  '560c9356d640493ce1ed3099ba876f1f/changestore/vscode-vfs-github/lbenz730/soccer_ha_covid'
-  ))
+library(tidyverse, quietly = TRUE)
+# setwd(here(
+#   '/Users/jbg/Library/Application Support/Code/User/globalStorage/github.remotehub/',
+#   '560c9356d640493ce1ed3099ba876f1f/changestore/vscode-vfs-github/lbenz730/soccer_ha_covid'
+#   ))
 list.files()
-dir.create('fbref_data/german_bundesliga', recursive = T)
+# dir.create('fbref_data/german_bundesliga', recursive = T)
 # install.packages('pacman')
 # install.packages("XML", repos = "https://cloud.r-project.org", type = "binary")
 #   install.packages("XML", repos = "http://www.omegahat.net/R", type = "mac.binary")
 pacman::p_load(here, XML, RCurl, furrr, glue)
-fp_1 <- '/Users/jbg/Library/Application Support/Code/User/globalStorage/github.remotehub/'
-list.files(file.path(fp_1, '90d1e7877ae987a07918a5c7f5369c7e/changestore/vscode-vfs-github'))
-setwd(here( 
-  fp_1,
-  '90d1e7877ae987a07918a5c7f5369c7e/changestore/vscode-vfs-github/JohnGavin/soccer_ha_covid'
-  ))
-list.files()
-fp_2 <- 'fbref_data/german_bundesliga'
-if (!dir.exists(fp_2)) dir.create(fp_2, recursive = T)
+# fp_1 <- '/Users/jbg/Library/Application Support/Code/User/globalStorage/github.remotehub/'
+# list.files(file.path(fp_1, '90d1e7877ae987a07918a5c7f5369c7e/changestore/vscode-vfs-github'))
+# setwd(here( 
+#   fp_1,
+#   '90d1e7877ae987a07918a5c7f5369c7e/changestore/vscode-vfs-github/JohnGavin/soccer_ha_covid'
+#   ))
+# list.files()
+# fp_2 <- 'fbref_data/german_bundesliga'
+# if (!dir.exists(fp_2)) dir.create(fp_2, recursive = T)
 
 plan(multicore(workers = parallel::detectCores() - 1))
 options(future.fork.enable = T)
