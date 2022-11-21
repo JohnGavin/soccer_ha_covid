@@ -6,7 +6,7 @@ library(tidyverse)
 pacman::p_load(here, XML, RCurl, furrr, glue)
 fp_1 <- '/Users/jbg/Library/Application Support/Code/User/globalStorage/github.remotehub/'
 list.files(file.path(fp_1, '90d1e7877ae987a07918a5c7f5369c7e/changestore/vscode-vfs-github'))
-setwd(here(
+setwd(here( 
   fp_1,
   '90d1e7877ae987a07918a5c7f5369c7e/changestore/vscode-vfs-github/JohnGavin/soccer_ha_covid'
   ))
