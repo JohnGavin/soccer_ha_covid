@@ -18,8 +18,8 @@ This repository contains the data and code used in a manuscript _Estimating the 
 ### Posteriors
 `.rds` files of posterior draws are available for goals and yellow card models for each league. 
 
-* __bvp_goals_no_corr/:__ Folder of posterior draw `.rds` objects for Model (3) in paper
-* __bvp_goals_lambda_3/:__ Folder of posterior draw `.rds` objects for Model (4) in paper
+* model_objects/__bvp_goals_no_corr/:__ Folder of posterior draw `.rds` objects for Model (3) in paper
+* model_objects/__bvp_goals_lambda_3/:__ Folder of posterior draw `.rds` objects for Model (4) in paper
 
 ### Model Objects
 `.rds` files of model objects are available for goals and yellow card models for each league. 

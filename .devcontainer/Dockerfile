@@ -66,4 +66,8 @@ RUN if [ "${ENABLE_JUPYTER}" = "true" ]; then \
 
 # [Optional] Uncomment this section to install additional R packages.
 RUN install2.r --error --skipinstalled --ncpus -1 \
-    pacman here XML RCurl furrr glue
+    rstan pacman here XML RCurl furrr glue
+# For execution on a local, multicore CPU with excess RAM we recommend calling
+# options(mc.cores = parallel::detectCores())
+# To avoid recompilation of unchanged Stan programs, we recommend calling
+# rstan_options(auto_write = TRUE)

@@ -1,5 +1,4 @@
 
-library(tidyverse, quietly = TRUE)
 # setwd(here(
 #   '/Users/jbg/Library/Application Support/Code/User/globalStorage/github.remotehub/',
 #   '560c9356d640493ce1ed3099ba876f1f/changestore/vscode-vfs-github/lbenz730/soccer_ha_covid'
@@ -9,7 +8,7 @@ list.files()
 # install.packages('pacman')
 # install.packages("XML", repos = "https://cloud.r-project.org", type = "binary")
 #   install.packages("XML", repos = "http://www.omegahat.net/R", type = "mac.binary")
-pacman::p_load(here, XML, RCurl, furrr, glue)
+pacman::p_load(tidyverse, here, XML, RCurl, furrr, glue)
 # fp_1 <- '/Users/jbg/Library/Application Support/Code/User/globalStorage/github.remotehub/'
 # list.files(file.path(fp_1, '90d1e7877ae987a07918a5c7f5369c7e/changestore/vscode-vfs-github'))
 # setwd(here( 
@@ -191,7 +190,7 @@ get_match_stats <- function(game_html) {
 
 
 ### Scrape Data
-league_info <- read_csv("league_info.csv")
+league_info <- read_csv("league_info.csv", show_col_types = FALSE)
 for(i in 1:nrow(league_info)) {
   base_url <- league_info$fbref_url[i]
   league_id <- league_info$fbref_league_id[i]
