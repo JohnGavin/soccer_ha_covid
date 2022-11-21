@@ -1,5 +1,11 @@
 
 library(tidyverse)
+setwd(here(
+  '/Users/jbg/Library/Application Support/Code/User/globalStorage/github.remotehub/',
+  '560c9356d640493ce1ed3099ba876f1f/changestore/vscode-vfs-github/lbenz730/soccer_ha_covid'
+  ))
+list.files()
+dir.create('fbref_data/german_bundesliga', recursive = T)
 # install.packages('pacman')
 # install.packages("XML", repos = "https://cloud.r-project.org", type = "binary")
 #   install.packages("XML", repos = "http://www.omegahat.net/R", type = "mac.binary")
@@ -16,6 +22,7 @@ if (!dir.exists(fp_2)) dir.create(fp_2, recursive = T)
 
 plan(multicore(workers = parallel::detectCores() - 1))
 options(future.fork.enable = T)
+
 
 
 get_match_stats <- function(game_html) {
