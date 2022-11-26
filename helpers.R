@@ -8,7 +8,7 @@ read_leage_csvs <- function(league) {
   files <- dir(here(paste0("fbref_data/", file_league)), full.names = T)
   
   game_stats <- 
-    map_dfr(files, read_csv) %>% 
+    map_dfr(files, read_csv, show_col_types = FALSE) %>% 
     arrange(date)
   
   return(game_stats)
