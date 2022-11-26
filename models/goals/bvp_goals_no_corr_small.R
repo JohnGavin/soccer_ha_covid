@@ -4,6 +4,7 @@ library(here)
 library(glue) 
 source(here('helpers.R'))
 options(mc.cores=parallel::detectCores())
+rstan_options(auto_write = FALSE)
 
 directory <- 'bvp_goals_no_corr_small'
 
@@ -16,10 +17,10 @@ if(!dir.exists(here(glue('posteriors/{directory}')))) {
 } 
 
 
-league_info <- read_csv(here("league_info.csv"))
+league_info <- read_csv(here("league_info.csv"), show_col_types = FALSE)
 
 ### Iterate Over Leagues
-for(i in 1:nrow(league_info)) {
+for(i in 1:nrow(league_info)[1]) {
   league <- league_info$alias[i]
   print(league)
   

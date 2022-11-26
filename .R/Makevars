@@ -1,0 +1,2 @@
+# WARNING: use /home/vscode/.R/Makevars
+# https://github.com/stan-dev/rstan/wiki/Configuring-C-Toolchain-for-Linux#c-toolchain-configuration
