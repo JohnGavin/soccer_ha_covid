@@ -63,9 +63,6 @@ RUN if [ "${ENABLE_JUPYTER}" = "true" ]; then \
     fi
 
 # [Optional] Uncomment this section to install additional OS packages.
-# ./.Rhistory (not ~/.Rhistory) so .Rhistory is stored
-# WARNING: this might include sensitive data / passwords?
-ENV R_HISTFILE "./.Rhistory"
 
 # https://github.com/stan-dev/rstan/wiki/Configuring-C-Toolchain-for-Linux#debian-testing
 # https://github.com/jeroen/V8#getting-started
@@ -132,12 +129,10 @@ RUN apt-get update \
 
 RUN Rscript --vanilla -e ' install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", "http://cran.us.r-project.org")) '
 
-# set_cmdstan_path('/home/rstudio/.cmdstan/cmdstan-2.31.0') ; install_cmdstan(cores = 2, overwrite=TRUE)
-RUN Rscript --vanilla -e ' library(cmdstanr) ; install_cmdstan(cores = 1, overwrite=TRUE) '
-
 
 RUN install2.r --error --skipinstalled --ncpus -2 \
-    devtools V8 brms 
+    devtools V8 brms jsonlite \
+    tidyverse here 
     # BiocManager 
     # posterior (bayesplot auto installed)
     # --deps StanHeaders rstan \
@@ -146,11 +141,16 @@ RUN install2.r --error --skipinstalled --ncpus -2 \
     # rstan brms
     # brms # \ # StanHeaders rstantools
 
-# - If you are in a container environment, please consider adding the
-#  following to your configuration to silence this warning
-#   options(bspm.sudo = TRUE)
-# WARNING: put options into ./.Rprofile else they wont persist between R sessions
-# options(bspm.sudo = TRUE, mc.cores = parallel::detectCores(), auto_write = TRUE)
+# ./.Rhistory (not ~/.Rhistory) so .Rhistory is stored
+# WARNING: this might include sensitive data / passwords?
+USER rstudio
+# savehistory is NA under radian ? 
+# perhaps save to ./.radian_history ?
+ENV R_HISTFILE "./.Rhistory"
+# USER rstudio saves to /home/rstudio/.cmdstan/ and is readable
+# set_cmdstan_path('/home/rstudio/.cmdstan/cmdstan-2.31.0') ; install_cmdstan(cores = 2, overwrite=TRUE)
+RUN Rscript --vanilla -e ' library(cmdstanr) ; install_cmdstan(cores = 1, overwrite=TRUE) '
+
 # NB: install as user ROOT
 # RUN Rscript --vanilla -e ' devtools::install_version("brms", dependencies = TRUE) '
 # RUN Rscript --vanilla -e 'install.packages(c("rstan","StanHeaders"), type="source", lib = .libPaths()[1], repos = c("https://mc-stan.org/r-packages/", getOption("repos"))'
@@ -190,10 +190,15 @@ RUN install2.r --error --skipinstalled --ncpus -2 \
 # https://mc-stan.org/cmdstanr/articles/cmdstanr.html#comparison-with-rstan
 # so NOT run set_cmdstan_path('/home/rstudio/.cmdstan/cmdstan-2.31.0') ; install_cmdstan(cores = 
 
-
-# library(cmdstanr) ; Sys.info() ; cmdstan_path() ; cmdstan_version() ; check_cmdstan_toolchain()
+# Sat pt 2 26 Nov worked but needed 
+#   options(brms.backend = "cmdstanr")
+#   set_cmdstan_path('/home/rstudio/.cmdstan/cmdstan-2.31.0')
+#   and maybe bspm.sudo = TRUE cos of Error in sink(type = "output") : invalid connection
+# library(cmdstanr) ; Sys.info() ; check_cmdstan_toolchain() 
+#  cmdstan_path() ; cmdstan_version() ; 
 # TODO: add to container environment config ?? options(bspm.sudo = TRUE)
-# library(cmdstanr) ; options(brms.backend = "cmdstanr") ; library(brms) ; fit1 <- brm(count ~ zAge + zBase * Trt + (1|patient), data = epilepsy, family = poisson())
+# library(cmdstanr) ; options(brms.backend = "cmdstanr") ; 
+# library(brms) ; fit1 <- brm(count ~ zAge + zBase * Trt + (1|patient), data = epilepsy, family = poisson())
 # (file <- file.path(cmdstan_path(), "examples", "bernoulli", "bernoulli.stan")) ; mod <- cmdstan_model(file) ; mod$print() ; mod$exe_file()
 # data_list <- list(N = 10, y = c(0,1,0,0,0,0,0,0,0,1)) ; fit <- mod$sample(data = data_list, seed = 123, chains = 4, parallel_chains = 4, refresh = 500 ) # print update every 500 iters
 # mod$sample() ; 
@@ -210,5 +215,5 @@ RUN install2.r --error --skipinstalled --ncpus -2 \
 # mcmc_hist(fit$draws("theta"), binwidth = 5) + vline_at(fit_mle$mle("theta"), size = 1.5)
 # fit_vb <- mod$variational(data = data_list, seed = 123, output_samples = 4000)
 # mcmc_hist(fit$draws("theta"), binwidth = 0.025) ; mcmc_hist(fit_vb$draws("theta"), binwidth = 0.025)
-# fit$save_object(file = "fit.RDS") ; fit2 <- readRDS("fit.RDS")
+# # fit$save_object(file = "fit.RDS") ; fit2 <- readRDS("fit.RDS")
 

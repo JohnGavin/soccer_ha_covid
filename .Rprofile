@@ -40,6 +40,7 @@ options(
   # you need to set options(bspm.sudo=TRUE).
   bspm.sudo = TRUE, # options()$bspm.sudo
   mc.cores = parallel::detectCores(), 
+  # or rstan_options(auto_write = TRUE) ?
   auto_write = FALSE) # TRUE ?
 
 ## options(repos = c("CRAN" = "http://cran.us.r-project.org"))
