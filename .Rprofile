@@ -39,11 +39,15 @@ options(
   # if you want to fall back to sudo in a non-interactive session, 
   # you need to set options(bspm.sudo=TRUE).
   bspm.sudo = TRUE, # options()$bspm.sudo
+  # For execution on a _local_, multicore CPU with excess RAM we recommend calling
   mc.cores = parallel::detectCores(), 
   # or rstan_options(auto_write = TRUE) ?
-  auto_write = FALSE) # TRUE ?
+  auto_write = FALSE # TRUE ?
+) 
 
-## options(repos = c("CRAN" = "http://cran.us.r-project.org"))
-# r = getOption("repos")
-# r["CRAN"] = "http://cran.us.r-project.org"
-# options(repos = r)
+eval({
+  r = getOption("repos") 
+  r["CRAN"] = "http://cran.us.r-project.org" 
+  options(repos = r)
+})
+## options(repos = c(c("CRAN" = "http://cran.us.r-project.org"), getOption("repos"))

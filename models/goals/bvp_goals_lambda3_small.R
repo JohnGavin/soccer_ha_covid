@@ -1,5 +1,6 @@
 library(tidyverse)
-library(rstan)
+library(cmdstanr)
+# library(rstan)
 library(here)
 library(glue) 
 source(here('helpers.R'))
@@ -16,11 +17,11 @@ if(!dir.exists(here(glue('posteriors/{directory}')))) {
 } 
 
 
-league_info <- read_csv(here("league_info.csv"))
-empirical_baselines <- read_csv(here('models/empirical_baselines_small.csv'))
+league_info <- read_csv(here("league_info.csv"), show_col_types = FALSE)
+empirical_baselines <- read_csv(here('models/empirical_baselines_small.csv'), show_col_types = FALSE)
 
 ### Iterate Over Leagues
-for(i in 1:nrow(league_info)) {
+for(i in 1:nrow(league_info)[1]) {
   league <- league_info$alias[i]
   print(league)
   

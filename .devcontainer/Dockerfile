@@ -141,14 +141,14 @@ RUN install2.r --error --skipinstalled --ncpus -2 \
     # rstan brms
     # brms # \ # StanHeaders rstantools
 
-# ./.Rhistory (not ~/.Rhistory) so .Rhistory is stored
-# WARNING: this might include sensitive data / passwords?
 USER rstudio
 # savehistory is NA under radian ? 
+#   WARNING: this might include sensitive data / passwords?
 # perhaps save to ./.radian_history ?
+#   ./.Rhistory (not ~/.Rhistory) so .Rhistory is stored
 ENV R_HISTFILE "./.Rhistory"
 # USER rstudio saves to /home/rstudio/.cmdstan/ and is readable
-# set_cmdstan_path('/home/rstudio/.cmdstan/cmdstan-2.31.0') ; install_cmdstan(cores = 2, overwrite=TRUE)
+# set_cmdstan_path is now in ./.Rprofile
 RUN Rscript --vanilla -e ' library(cmdstanr) ; install_cmdstan(cores = 1, overwrite=TRUE) '
 
 # NB: install as user ROOT
