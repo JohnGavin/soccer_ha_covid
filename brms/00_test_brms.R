@@ -2,10 +2,11 @@
 #   options(brms.backend = "cmdstanr")
 #   set_cmdstan_path('/home/rstudio/.cmdstan/cmdstan-2.31.0')
 #   and maybe bspm.sudo = TRUE cos of Error in sink(type = "output") : invalid connection
-library(cmdstanr) ; str(Sys.info()) ; check_cmdstan_toolchain() 
- cmdstan_path() ; cmdstan_version() ; 
-TODO: add to container environment config ?? options(bspm.sudo = TRUE)
-# options()$brms.backend ; options()$auto_write ; options()$mc.cores ; options()$bspm.sudo
+str(Sys.info()) ; 
+# capture.output(system("g++ -v"))
+library(cmdstanr) ; check_cmdstan_toolchain() ; cmdstan_path() ; cmdstan_version() ; 
+# TODO: add to container environment config ?? options(bspm.sudo = TRUE)
+options()$brms.backend ; options()$auto_write ; options()$mc.cores ; options()$bspm.sudo
 library(brms) ; fit1 <- brm(count ~ zAge + zBase * Trt + (1|patient), data = epilepsy, family = poisson())
 library(cmdstanr) ; (file <- file.path(cmdstan_path(), "examples", "bernoulli", "bernoulli.stan")) ; mod <- cmdstan_model(file) ; mod$print() ; mod$exe_file()
 data_list <- list(N = 10, y = c(0,1,0,0,0,0,0,0,0,1)) ; 
