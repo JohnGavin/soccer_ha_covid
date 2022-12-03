@@ -4,7 +4,6 @@
 #ARG BASE_IMAGE=rocker/tidyverse
 #FROM ${BASE_IMAGE}:${VARIANT}
 FROM eddelbuettel/r2u:jammy
-# docker pull rstan/rstan:latest ?
 RUN apt update -qq \
      && apt install --yes --no-install-recommends git
 
@@ -128,8 +127,8 @@ RUN apt-get update \
 # RUN Rscript --vanilla -e ' install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", getOption("repos"))) '
 # RUN Rscript --vanilla -e ' install.packages(c("StanHeaders","rstan"), repos = c("https://mc-stan.org/r-packages/", getOption("repos")), type="source", lib = "/usr/lib/R/site-library") ' 
 
-RUN Rscript --vanilla -e ' install.packages("cmdstanr", repos = c("https://mc-stan.org/r-packages/", "http://cran.us.r-project.org")) '
-
+RUN Rscript --vanilla -e ' install.packages("cmdstanr", \
+    repos = c("https://mc-stan.org/r-packages/", "http://cran.us.r-project.org")) '
 
 RUN install2.r --error --skipinstalled --ncpus -2 \
     devtools V8 brms jsonlite \
@@ -137,10 +136,7 @@ RUN install2.r --error --skipinstalled --ncpus -2 \
     # BiocManager 
     # posterior (bayesplot auto installed)
     # --deps StanHeaders rstan \
-    # --deps brms 
     # pacman here XML RCurl furrr glue \
-    # rstan brms
-    # brms # \ # StanHeaders rstantools
 
 USER rstudio
 # savehistory is NA under radian ? 
