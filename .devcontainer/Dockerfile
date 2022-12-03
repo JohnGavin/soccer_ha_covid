@@ -4,6 +4,7 @@
 #ARG BASE_IMAGE=rocker/tidyverse
 #FROM ${BASE_IMAGE}:${VARIANT}
 FROM eddelbuettel/r2u:jammy
+# docker pull rstan/rstan:latest ?
 RUN apt update -qq \
      && apt install --yes --no-install-recommends git
 
