@@ -12,9 +12,7 @@ head(kidney, n = 3)
 
 ### make sure that a C++ compiler is installed and can be called within R
 ### for Rtools
-system("g++ -v")
-### for Xcode / mac
-# system("clang++ -v")
+system("g++ -v") # for Xcode / mac # system("clang++ -v")
 
 ### fit the first model to the kidney data
 fit1 <- brm(formula = 
