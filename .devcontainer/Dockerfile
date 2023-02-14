@@ -1,9 +1,9 @@
 # [Choice] R version: 4, 4.2, 4.1, 4.0
-#ARG VARIANT=4.2
+ARG VARIANT=4.2
 # # [Choice] Base image. Minimal (r-ver), tidyverse installed (tidyverse), or full image (binder): rocker/r-ver, rocker/tidyverse, rocker/binder
-#ARG BASE_IMAGE=rocker/tidyverse
-#FROM ${BASE_IMAGE}:${VARIANT}
-FROM eddelbuettel/r2u:jammy
+ARG BASE_IMAGE=rocker/tidyverse
+FROM ${BASE_IMAGE}:${VARIANT}
+# FROM eddelbuettel/r2u:jammy
 RUN apt update -qq \
      && apt install --yes --no-install-recommends git
 
@@ -72,9 +72,9 @@ RUN apt-get update \
         libgdal-dev libopenblas-dev libnode-dev libudunits2-dev  \
         pandoc-citeproc pandoc make \
         libv8-dev \
-        libglpk-dev 
-        # r-cran-rstan
-        # libgfortran4
+        libglpk-dev \
+        r-cran-rstan \
+        libgfortran4
 
 # [Optional] Uncomment this section to install additional R packages.
 # littler::update.packages(repos=repos, ask=FALSE, lib.loc=lib.loc)
@@ -127,12 +127,13 @@ RUN apt-get update \
 # RUN Rscript --vanilla -e ' install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", getOption("repos"))) '
 # RUN Rscript --vanilla -e ' install.packages(c("StanHeaders","rstan"), repos = c("https://mc-stan.org/r-packages/", getOption("repos")), type="source", lib = "/usr/lib/R/site-library") ' 
 
-RUN Rscript --vanilla -e ' install.packages("cmdstanr", \
-    repos = c("https://mc-stan.org/r-packages/", "http://cran.us.r-project.org")) '
+# RUN Rscript --vanilla -e ' install.packages("cmdstanr", \
+#    repos = c("https://mc-stan.org/r-packages/", "http://cran.us.r-project.org")) '
 
 RUN install2.r --error --skipinstalled --ncpus -2 \
     devtools V8 brms jsonlite \
-    tidyverse here 
+    here 
+    # tidyverse
     # BiocManager 
     # posterior (bayesplot auto installed)
     # --deps StanHeaders rstan \
@@ -144,9 +145,10 @@ USER rstudio
 # perhaps save to ./.radian_history ?
 #   ./.Rhistory (not ~/.Rhistory) so .Rhistory is stored
 ENV R_HISTFILE "./.Rhistory"
+
 # USER rstudio saves to /home/rstudio/.cmdstan/ and is readable
 # set_cmdstan_path is now in ./.Rprofile
-RUN Rscript --vanilla -e ' library(cmdstanr) ; install_cmdstan(cores = 1, overwrite=TRUE) '
+# RUN Rscript --vanilla -e ' library(cmdstanr) ; install_cmdstan(cores = 1, overwrite=TRUE) '
 
 # NB: install as user ROOT
 # RUN Rscript --vanilla -e ' devtools::install_version("brms", dependencies = TRUE) '
