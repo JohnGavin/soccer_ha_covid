@@ -73,8 +73,8 @@ RUN apt-get update \
         pandoc-citeproc pandoc make \
         libv8-dev \
         libglpk-dev \
-        r-cran-rstan \
-        libgfortran4
+        r-cran-rstan 
+        # libgfortran4
 
 # [Optional] Uncomment this section to install additional R packages.
 # littler::update.packages(repos=repos, ask=FALSE, lib.loc=lib.loc)
@@ -127,17 +127,21 @@ RUN apt-get update \
 # RUN Rscript --vanilla -e ' install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", getOption("repos"))) '
 # RUN Rscript --vanilla -e ' install.packages(c("StanHeaders","rstan"), repos = c("https://mc-stan.org/r-packages/", getOption("repos")), type="source", lib = "/usr/lib/R/site-library") ' 
 
-# RUN Rscript --vanilla -e ' install.packages("cmdstanr", \
-#    repos = c("https://mc-stan.org/r-packages/", "http://cran.us.r-project.org")) '
-
 RUN install2.r --error --skipinstalled --ncpus -2 \
     devtools V8 brms jsonlite \
-    here 
+    here renv 
     # tidyverse
     # BiocManager 
     # posterior (bayesplot auto installed)
     # --deps StanHeaders rstan \
     # pacman here XML RCurl furrr glue \
+
+RUN Rscript --vanilla -e ' install.packages("cmdstanr", \
+    repos = c("https://mc-stan.org/r-packages/", "http://cran.us.r-project.org")) '
+
+# USER rstudio saves to /home/rstudio/.cmdstan/ and is readable
+# set_cmdstan_path is now in ./.Rprofile
+RUN Rscript --vanilla -e ' library(cmdstanr) ; install_cmdstan(cores = 1, overwrite=TRUE) '
 
 USER rstudio
 # savehistory is NA under radian ? 
@@ -145,10 +149,6 @@ USER rstudio
 # perhaps save to ./.radian_history ?
 #   ./.Rhistory (not ~/.Rhistory) so .Rhistory is stored
 ENV R_HISTFILE "./.Rhistory"
-
-# USER rstudio saves to /home/rstudio/.cmdstan/ and is readable
-# set_cmdstan_path is now in ./.Rprofile
-# RUN Rscript --vanilla -e ' library(cmdstanr) ; install_cmdstan(cores = 1, overwrite=TRUE) '
 
 # NB: install as user ROOT
 # RUN Rscript --vanilla -e ' devtools::install_version("brms", dependencies = TRUE) '
