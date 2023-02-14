@@ -41,7 +41,7 @@ names(sdata)
 ### obtain model summaries and plots
 summary(fit1, waic = TRUE)
 plot(fit1, ask = FALSE)
-plot(marginal_effects(fit1), ask = FALSE)
+plot(conditional_effects(fit1), ask = FALSE)
 
 ### open shinystan in browser
 ### to stop shinystan, click 'save & close' on the top left of the browser window
