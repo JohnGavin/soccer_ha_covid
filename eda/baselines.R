@@ -3,7 +3,7 @@ library(here)
 library(ggridges)
 source(here('helpers.R'))
 
-directory <- "bvp_yc_covid_small"
+directory <- c("bvp_goals_no_corr", "bvp_yc_covid_small")[1]
 
 league_info <- read_csv(here('league_info.csv'))
 draws <- 
@@ -22,7 +22,7 @@ df_medians <-
   summarise('median' = median(posterior_draw))
 
 draws$league_f <- factor(draws$league, 
-                         levels = df_medians$league[df_medians$hfa_type == 'Pre-COVID (w/ Fans)'][order(df_medians$median[df_medians$hfa_type == 'Pre-COVID (w/ Fans)'], decreasing = F)])
+  levels = df_medians$league[df_medians$hfa_type == 'Pre-COVID (w/ Fans)'][order(df_medians$median[df_medians$hfa_type == 'Pre-COVID (w/ Fans)'], decreasing = F)])
 
 
 

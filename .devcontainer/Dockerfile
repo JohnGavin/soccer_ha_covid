@@ -136,12 +136,18 @@ RUN install2.r --error --skipinstalled --ncpus -2 \
     # --deps StanHeaders rstan \
     # pacman here XML RCurl furrr glue \
 
-RUN Rscript --vanilla -e ' install.packages("cmdstanr", \
-    repos = c("https://mc-stan.org/r-packages/", "http://cran.us.r-project.org")) '
+#RUN Rscript --vanilla -e ' install.packages("cmdstanr", \
+#    repos = c("https://mc-stan.org/r-packages/", "http://cran.us.r-project.org")) '
 
 # USER rstudio saves to /home/rstudio/.cmdstan/ and is readable
 # set_cmdstan_path is now in ./.Rprofile
-RUN Rscript --vanilla -e ' library(cmdstanr) ; install_cmdstan(cores = 1, overwrite=TRUE) '
+#RUN Rscript --vanilla -e ' library(cmdstanr) ; install_cmdstan(cores = 1, overwrite=TRUE) '
+
+# 
+RUN Rscript --vanilla -e ' remove.packages(c("rstan", "StanHeaders")) '
+RUN Rscript --vanilla -e ' Sys.setenv(MAKEFLAGS = "-j4") ' # four cores used
+RUN Rscript --vanilla -e ' install.packages("rstan", type = "source") '
+
 
 USER rstudio
 # savehistory is NA under radian ? 

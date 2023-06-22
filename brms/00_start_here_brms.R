@@ -4,7 +4,12 @@
 #   and maybe bspm.sudo = TRUE cos of Error in sink(type = "output") : invalid connection
 str(Sys.info()) ; 
 # capture.output(system("g++ -v"))
-library(cmdstanr) ; check_cmdstan_toolchain() ; cmdstan_path() ; cmdstan_version() ; 
+library(cmdstanr) ; 
+    check_cmdstan_toolchain() ; 
+    # essential - to set to default folder
+    set_cmdstan_path() ;
+    cmdstan_path() ; 
+    cmdstan_version() ; 
 # TODO: add to container environment config ?? options(bspm.sudo = TRUE)
 options()$brms.backend ; options()$auto_write ; options()$mc.cores ; options()$bspm.sudo
 library(brms) ; fit1 <- brm(count ~ zAge + zBase * Trt + (1|patient), data = epilepsy, family = poisson())
