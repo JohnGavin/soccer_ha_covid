@@ -144,9 +144,14 @@ RUN install2.r --error --skipinstalled --ncpus -2 \
 #RUN Rscript --vanilla -e ' library(cmdstanr) ; install_cmdstan(cores = 1, overwrite=TRUE) '
 
 # Linux install rstan
-RUN Rscript --vanilla -e ' remove.packages(c("rstan", "StanHeaders")) '
+RUN Rscript --vanilla -e ' eval({
+  r = getOption("repos") 
+  r["CRAN"] = "http://cran.us.r-project.org" 
+  options(repos = r)
+}) '
+RUN Rscript --vanilla -e ' remove.packages(c("rstan", "StanHeaders")) ' 
 RUN Rscript --vanilla -e ' Sys.setenv(MAKEFLAGS = "-j4") ' # four cores used
-RUN Rscript --vanilla -e ' install.packages("rstan", type = "source") '
+RUN Rscript --vanilla -e ' install.packages("rstan", type = "source", repos = "http://cran.us.r-project.org" ) '
 
 USER rstudio
 # savehistory is NA under radian ? 
