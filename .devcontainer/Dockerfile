@@ -143,11 +143,10 @@ RUN install2.r --error --skipinstalled --ncpus -2 \
 # set_cmdstan_path is now in ./.Rprofile
 #RUN Rscript --vanilla -e ' library(cmdstanr) ; install_cmdstan(cores = 1, overwrite=TRUE) '
 
-# 
+# Linux install rstan
 RUN Rscript --vanilla -e ' remove.packages(c("rstan", "StanHeaders")) '
 RUN Rscript --vanilla -e ' Sys.setenv(MAKEFLAGS = "-j4") ' # four cores used
 RUN Rscript --vanilla -e ' install.packages("rstan", type = "source") '
-
 
 USER rstudio
 # savehistory is NA under radian ? 
