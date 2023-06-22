@@ -27,13 +27,13 @@
 #  following to your configuration to silence this warning
 #   options(bspm.sudo = TRUE)
 # WARNING: put options into ./.Rprofile else they wont persist between R sessions
-cmdstanr::set_cmdstan_path('/home/rstudio/.cmdstan/cmdstan-2.31.0')
+#cmdstanr::set_cmdstan_path('/home/rstudio/.cmdstan/cmdstan-2.31.0')
 # options()$auto_write ; options()$mc.cores ; options()$bspm.sudo
 # options(bspm.sudo = NULL, mc.cores = NULL, auto_write = NULL)
 
 options(
 # https://community.rstudio.com/t/not-able-to-install-brms-rstan-package-on-linux-r-server/96249/2
-  brms.backend = "cmdstanr", 
+  #brms.backend = "cmdstanr", 
   # bspm: Bridge to System Package Manager
   # https://cran.r-project.org/web/packages/bspm/bspm.pdf
   # if you want to fall back to sudo in a non-interactive session, 
