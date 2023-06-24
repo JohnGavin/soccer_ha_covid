@@ -65,11 +65,12 @@ RUN if [ "${ENABLE_JUPYTER}" = "true" ]; then \
 RUN apt-get update \
     && export DEBIAN_FRONTEND=noninteractive \
     && apt-get -y install --no-install-recommends \
-        libgdal-dev libopenblas-dev libnode-dev libudunits2-dev  \
+        libopenblas-dev libnode-dev libudunits2-dev  \
         pandoc-citeproc pandoc make \
         libv8-dev \
         libglpk-dev 
-        # r-cran-rstan 
+        # r-cran-rstan
+        # libgdal-dev  
         # libgfortran4
 
 # [Optional] Uncomment this section to install additional R packages.
@@ -130,8 +131,8 @@ RUN apt-get update \
 
 RUN install2.r --error --skipinstalled --ncpus -2 \
     devtools V8 brms jsonlite \
-    here renv \
-    --deps rstan 
+    here renv 
+    # --deps rstan 
     # tidyverse StanHeaders
     # BiocManager 
     # posterior (bayesplot auto installed)
