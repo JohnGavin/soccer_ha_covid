@@ -1,9 +1,5 @@
-# [Choice] R version: 4, 4.2, 4.1, 4.0
-ARG VARIANT=4.2
-# # [Choice] Base image. Minimal (r-ver), tidyverse installed (tidyverse), or full image (binder): rocker/r-ver, rocker/tidyverse, rocker/binder
-ARG BASE_IMAGE=rocker/tidyverse
-FROM ${BASE_IMAGE}:${VARIANT}
 # FROM eddelbuettel/r2u:jammy
+FROM rocker/r-bspm:20.04 
 RUN apt update -qq \
      && apt install --yes --no-install-recommends git
 
@@ -77,6 +73,11 @@ RUN apt-get update \
         # libgfortran4
 
 # [Optional] Uncomment this section to install additional R packages.
+
+# https://stackoverflow.com/questions/70824760/issue-creating-docker-image-which-installs-rstan
+# RUN install.r rstan
+# options(mc.cores = parallel::detectCores()) ; rstan_options(auto_write = TRUE)
+
 # littler::update.packages(repos=repos, ask=FALSE, lib.loc=lib.loc)
 # packageVersion("rstan") ; packageVersion("StanHeaders")
 # [1] ‘2.21.7’
@@ -129,11 +130,11 @@ RUN apt-get update \
 
 RUN install2.r --error --skipinstalled --ncpus -2 \
     devtools V8 brms jsonlite \
-    here renv 
-    # tidyverse
+    here renv \
+    --deps rstan 
+    # tidyverse StanHeaders
     # BiocManager 
     # posterior (bayesplot auto installed)
-    # --deps StanHeaders rstan \
     # pacman here XML RCurl furrr glue \
 
 #RUN Rscript --vanilla -e ' install.packages("cmdstanr", \
@@ -144,14 +145,14 @@ RUN install2.r --error --skipinstalled --ncpus -2 \
 #RUN Rscript --vanilla -e ' library(cmdstanr) ; install_cmdstan(cores = 1, overwrite=TRUE) '
 
 # Linux install rstan
-RUN Rscript --vanilla -e ' eval({\
-  r = getOption("repos") \
-  r["CRAN"] = "http://cran.us.r-project.org" \
-  options(repos = r)\
-}) '
-RUN Rscript --vanilla -e ' remove.packages(c("rstan", "StanHeaders")) ' 
-RUN Rscript --vanilla -e ' Sys.setenv(MAKEFLAGS = "-j4") ' # four cores used
-RUN Rscript --vanilla -e ' install.packages("rstan", type = "source", repos = "http://cran.us.r-project.org" ) '
+#RUN Rscript --vanilla -e ' eval({\
+#  r = getOption("repos") ; \
+#  r["CRAN"] = "http://cran.us.r-project.org" ; \
+#  options(repos = r)\
+#}) '
+# RUN Rscript --vanilla -e ' remove.packages(c("rstan", "StanHeaders")) ' 
+#RUN Rscript --vanilla -e ' Sys.setenv(MAKEFLAGS = "-j4") ' # four cores used
+#RUN Rscript --vanilla -e ' install.packages("rstan", type = "source", repos = "http://cran.us.r-project.org" ) '
 
 USER rstudio
 # savehistory is NA under radian ? 
