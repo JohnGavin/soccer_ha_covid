@@ -20,8 +20,9 @@ RUN add-apt-repository ppa:c2d4u.team/c2d4u4.0+
 
 # installs into "/usr/lib/R/site-library" (not "/usr/local/lib/R/site-library")
 # RUN apt install --no-install-recommends --assume-yes r-base
-# RUN apt install --no-install-recommends --assume-yes r-cran-rstan 
+# r-cran-bspm ? bspm is in list.files(.libPaths()[1]
 RUN apt install --no-install-recommends --assume-yes r-cran-tidyverse 
+RUN apt install --no-install-recommends --assume-yes r-cran-rstan 
 # RUN apt install --no-install-recommends --assume-yes r-cran-brms
 
 # RUN Rscript --vanilla -e ' install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", getOption("repos")), lib = "/usr/local/lib/R/site-library") '

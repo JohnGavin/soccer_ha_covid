@@ -1,6 +1,6 @@
 
 # store .Rprofile inside github repo but with no passwords.
-# WARNING: save to /home/vscode/.Rprofile - will NOT be save by git to github repo?
+# WARNING: save to /home/vscode/.Rprofile - will NOT be save by git to github repo? # nolint
 
 # https://stackoverflow.com/questions/16734937/saving-and-loading-hi>
 # if (interactive()) {
@@ -15,8 +15,8 @@
 #         try(savehistory(file.path(.(getwd()), ".Rhistory"))))),
 #         onexit = TRUE))
 # }
-# either ~/.radian_history or any local .radian_hisotry. 
-# Also depends on how you start radian. 
+# either ~/.radian_history or any local .radian_hisotry.  # nolint
+# Also depends on how you start radian.  # nolint
 #   For example, radian --global-history will also use the history 
 #     in the home directory.
 
@@ -38,7 +38,8 @@ options(
   # For execution on a _local_, multicore CPU with excess RAM we recommend calling
   mc.cores = parallel::detectCores(), 
   # or rstan_options(auto_write = TRUE) ?
-  auto_write = FALSE # TRUE ?
+  auto_write = NULL # TRUE ? auto_write NOT auto.write?
+  # rstan_options(auto_write = FALSE)
 ) 
 
 # cat /etc/R/Rprofile.site
