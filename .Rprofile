@@ -1,7 +1,6 @@
 
-# TODO: mv ~/.Rprofile . # to store .Rprofile inside github repo
-# WARNING: save to /home/vscode/.Rprofile 
-#   but it will NOT be save by git to the github repo?
+# store .Rprofile inside github repo but with no passwords.
+# WARNING: save to /home/vscode/.Rprofile - will NOT be save by git to github repo?
 
 # https://stackoverflow.com/questions/16734937/saving-and-loading-hi>
 # if (interactive()) {
@@ -12,7 +11,7 @@
 #   invisible(
 #     reg.finalizer(
 #       .GlobalEnv,
-#       eval(bquote(function(e) 
+#       eval(bquote(function(e)
 #         try(savehistory(file.path(.(getwd()), ".Rhistory"))))),
 #         onexit = TRUE))
 # }
@@ -23,9 +22,6 @@
 
 
 
-# - If you are in a container environment, please consider adding the
-#  following to your configuration to silence this warning
-#   options(bspm.sudo = TRUE)
 # WARNING: put options into ./.Rprofile else they wont persist between R sessions
 #cmdstanr::set_cmdstan_path('/home/rstudio/.cmdstan/cmdstan-2.31.0')
 # options()$auto_write ; options()$mc.cores ; options()$bspm.sudo
@@ -45,11 +41,11 @@ options(
   auto_write = FALSE # TRUE ?
 ) 
 
-eval({
-  r = getOption("repos") 
-  r["CRAN"] = c(
-    "cloud.r-project.org",
-    "http://cran.us.r-project.org")[1] 
-  options(repos = r)
-})
-## options(repos = c(c("CRAN" = "http://cran.us.r-project.org"), getOption("repos"))
+# cat /etc/R/Rprofile.site
+# eval({
+#   r = getOption("repos") 
+#   r["CRAN"] = c(
+#     "cloud.r-project.org",
+#     "http://cran.us.r-project.org")[1] 
+#   options(repos = r)
+# })
