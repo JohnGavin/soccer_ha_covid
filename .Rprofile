@@ -47,7 +47,9 @@ options(
 
 eval({
   r = getOption("repos") 
-  r["CRAN"] = "http://cran.us.r-project.org" 
+  r["CRAN"] = c(
+    "cloud.r-project.org",
+    "http://cran.us.r-project.org")[1] 
   options(repos = r)
 })
 ## options(repos = c(c("CRAN" = "http://cran.us.r-project.org"), getOption("repos"))
