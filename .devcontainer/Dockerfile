@@ -9,21 +9,30 @@ RUN apt update -qq \
 # https://cloud.r-project.org/bin/linux/ubuntu/
 # install two helper packages we need
 RUN apt install --no-install-recommends software-properties-common dirmngr
+
 # add the signing key (by Michael Rutter) for these repos
 # To verify key, run gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
 # Fingerprint: E298A3A825C0D65DFD57CBB651716619E084DAB9
 # RUN wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
 # add the R 4.0 repo from CRAN -- adjust 'focal' to 'groovy' or 'bionic' as needed
 RUN add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
+# RUN add-apt-repository ppa:marutter/rrutter4.0   # R v4.0 and higher
 
-RUN add-apt-repository ppa:c2d4u.team/c2d4u4.0+
+
+# https://enchufa2.github.io/bspm/slides/20210709-useR2021_talk.html#28
+RUN add-apt-repository ppa:c2d4u.team/c2d4u4.0+  # R packages
+RUN apt install -y r-cran-bspm python3-{dbus,gi,apt}
+
 
 # installs into "/usr/lib/R/site-library" (not "/usr/local/lib/R/site-library")
 # RUN apt install --no-install-recommends --assume-yes r-base
 # r-cran-bspm ? bspm is in list.files(.libPaths()[1]
+# https://enchufa2.github.io/bspm/slides/20210709-useR2021_talk.html#21
+#   cran2copr's CoprManager is just a branded version of bspm
 RUN apt install --no-install-recommends --assume-yes r-cran-tidyverse 
 RUN apt install --no-install-recommends --assume-yes r-cran-rstan 
 # RUN apt install --no-install-recommends --assume-yes r-cran-brms
+# RUN apt install --no-install-recommends --assume-yes r-cran-greta
 
 # RUN Rscript --vanilla -e ' install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", getOption("repos")), lib = "/usr/local/lib/R/site-library") '
 # RUN Rscript --vanilla -e ' install.packages("brms", repos="https://cran.r-project.org", lib = "/usr/local/lib/R/site-library") '
