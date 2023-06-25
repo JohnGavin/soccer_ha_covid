@@ -21,8 +21,6 @@ RUN add-apt-repository ppa:c2d4u.team/c2d4u4.0+
 # installs into "/usr/lib/R/site-library" (not "/usr/local/lib/R/site-library")
 # RUN apt install --no-install-recommends --assume-yes r-base
 # RUN apt install --no-install-recommends --assume-yes r-cran-rstan 
-RUN apt install --no-install-recommends --assume-yes r-cran-languageserver 
-RUN apt install --no-install-recommends --assume-yes r-cran-httpgd 
 RUN apt install --no-install-recommends --assume-yes r-cran-tidyverse 
 # RUN apt install --no-install-recommends --assume-yes r-cran-brms
 
@@ -56,9 +54,9 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts \
     && python3 -m pip --no-cache-dir install radian \
     && install2.r --error --skipinstalled --ncpus -1 \
-        devtools 
+        languageserver httpgd \
     && rm -rf /tmp/downloaded_packages
-    # languageserver httpgd \
+
 
 # VSCode R Debugger dependency. Install the latest release version from GitHub without using GitHub API.
 # See https://github.com/microsoft/vscode-dev-containers/issues/1032
