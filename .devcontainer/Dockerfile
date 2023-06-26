@@ -105,4 +105,4 @@ USER rstudio
 # #   ./.Rhistory (not ~/.Rhistory) so .Rhistory is stored
 ENV R_HISTFILE "./.Rhistory" 
 
-# CMD ["r"] / CMD ["bash"]
+# CMD ["r"] / CMD ["bash"] / CMD ["zsh"]

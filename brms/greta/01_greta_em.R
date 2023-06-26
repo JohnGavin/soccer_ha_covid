@@ -9,4 +9,4 @@ mean <- int + coef * x
 distribution(y) <- normal(mean, sd)
 m <- model(int, coef, sd)
 draws <- mcmc(m, n_samples = 1000)
-summary(draws)   
+summary(draws)  
