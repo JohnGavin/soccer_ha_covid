@@ -7,7 +7,7 @@ RUN apt update -qq \
      && apt install --yes --no-install-recommends git
 
 # https://cloud.r-project.org/bin/linux/ubuntu/
-# install two helper packages we need
+# install two helper packages
 RUN apt install --no-install-recommends software-properties-common dirmngr
 
 # add the signing key (by Michael Rutter) for these repos
@@ -22,15 +22,14 @@ RUN add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_r
 # https://enchufa2.github.io/bspm/slides/20210709-useR2021_talk.html#28
 RUN add-apt-repository ppa:c2d4u.team/c2d4u4.0+  # R packages
 RUN apt install -y r-cran-bspm python3-{dbus,gi,apt}
-
+# r-cran-bspm ? bspm is in list.files(.libPaths()[1]
 
 # installs into "/usr/lib/R/site-library" (not "/usr/local/lib/R/site-library")
-# RUN apt install --no-install-recommends --assume-yes r-base
-# r-cran-bspm ? bspm is in list.files(.libPaths()[1]
 # https://enchufa2.github.io/bspm/slides/20210709-useR2021_talk.html#21
 #   cran2copr's CoprManager is just a branded version of bspm
 RUN apt install --no-install-recommends --assume-yes r-cran-tidyverse 
-RUN apt install --no-install-recommends --assume-yes r-cran-rstan 
+# --no-install-recommends 
+RUN apt install --assume-yes r-cran-rstan 
 # RUN apt install --no-install-recommends --assume-yes r-cran-brms
 # RUN apt install --no-install-recommends --assume-yes r-cran-greta
 
