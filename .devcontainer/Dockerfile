@@ -26,7 +26,10 @@ RUN apt-get install -y r-cran-jsonlite
 # shiny jsonlite ggplot2 htmltools remotes renv \
 
 # RUN apt-get install -y r-cran-bspm 
-RUN apt-get install -y python3-{dbus,gi,apt} r-cran-bspm
+RUN apt-get install -y python3-apt python3-dbus python3-gi
+RUN apt-get install -y r-cran-bspm
+# RUN apt install -y python3-apt r-cran-bspm
+# RUN apt-get install -y python3-{dbus,gi,apt} r-cran-bspm
 # r-cran-bspm ? bspm is in list.files(.libPaths()[1]
 
 # installs into "/usr/lib/R/site-library" (not "/usr/local/lib/R/site-library")
@@ -40,7 +43,8 @@ RUN apt-get install -y python3-{dbus,gi,apt} r-cran-bspm
 # RUN apt-get install --assume-yes r-cran-rstan r-cran-shinystan
 # RUN apt-get install --assume-yes r-cran-brms
 RUN apt-get install --no-install-recommends --assume-yes r-cran-greta
-RUN apt-get upgrade
+# RUN Rscript --vanilla -e ' install_greta_deps() '
+# RUN apt-get upgrade
 
 # RUN Rscript --vanilla -e ' install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", getOption("repos")), lib = "/usr/local/lib/R/site-library") '
 # RUN Rscript --vanilla -e ' install.packages("brms", repos="https://cran.r-project.org", lib = "/usr/local/lib/R/site-library") '
@@ -75,6 +79,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
         languageserver httpgd \
         knitr rmarkdown quarto \
     && rm -rf /tmp/downloaded_packages
+    # https://hosting.analythium.io/how-to-set-up-quarto-with-docker-part-1-static-content/
 
 
 # apt-get install gnupg wget && \
@@ -98,4 +103,6 @@ USER rstudio
 # #   WARNING: this might include sensitive data / passwords?
 # # perhaps save to ./.radian_history ?
 # #   ./.Rhistory (not ~/.Rhistory) so .Rhistory is stored
- ENV R_HISTFILE "./.Rhistory" 
+ENV R_HISTFILE "./.Rhistory" 
+
+# CMD ["r"] / CMD ["bash"]
