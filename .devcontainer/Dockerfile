@@ -32,7 +32,7 @@ RUN apt-get install -y r-cran-bspm
 #   cran2copr's CoprManager is just a branded version of bspm
 # RUN apt-get install --no-install-recommends --assume-yes r-cran-tidyverse 
 # --no-install-recommends 
-# RUN apt-get install --assume-yes r-cran-rstan 
+# RUN apt-get install --assume-yes r-cran-rstan r-cran-shinystan
 # RUN apt-get install --no-install-recommends --assume-yes r-cran-brms
 RUN apt-get install --no-install-recommends --assume-yes r-cran-greta
 
