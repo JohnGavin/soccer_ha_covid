@@ -22,8 +22,9 @@ RUN add-apt-repository ppa:marutter/rrutter4.0 && apt update # R v4.0 and higher
 
 # https://enchufa2.github.io/bspm/slides/20210709-useR2021_talk.html#28
 RUN add-apt-repository ppa:c2d4u.team/c2d4u4.0+ && apt-get update # R packages
-RUN apt-get install -y quarto
 RUN apt-get install -y r-cran-jsonlite
+# shiny jsonlite ggplot2 htmltools remotes renv \
+
 # RUN apt-get install -y r-cran-bspm 
 RUN apt-get install -y python3-{dbus,gi,apt} r-cran-bspm
 # r-cran-bspm ? bspm is in list.files(.libPaths()[1]
@@ -31,6 +32,9 @@ RUN apt-get install -y python3-{dbus,gi,apt} r-cran-bspm
 # installs into "/usr/lib/R/site-library" (not "/usr/local/lib/R/site-library")
 # https://enchufa2.github.io/bspm/slides/20210709-useR2021_talk.html#21
 #   cran2copr's CoprManager is just a branded version of bspm
+# CoprManager::disable() ; install.packages("car") # disable the CoprManager, so install.packages only works from source
+
+
 # RUN apt-get install --no-install-recommends --assume-yes r-cran-tidyverse 
 # --no-install-recommends 
 # RUN apt-get install --assume-yes r-cran-rstan r-cran-shinystan
@@ -69,7 +73,9 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
     && python3 -m pip --no-cache-dir install radian \
     && install2.r --error --skipinstalled --ncpus -1 \
         languageserver httpgd \
+        knitr rmarkdown quarto \
     && rm -rf /tmp/downloaded_packages
+
 
 # apt-get install gnupg wget && \
 #   wget -qO- https://apt.pacha.dev/pacha_pubkey.asc | tee -a /etc/apt/trusted.gpg.d/apt_pacha_pubkey.asc && \
