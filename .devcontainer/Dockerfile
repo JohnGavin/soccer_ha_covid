@@ -22,12 +22,11 @@ RUN add-apt-repository ppa:marutter/rrutter4.0 && apt update # R v4.0 and higher
 
 # https://enchufa2.github.io/bspm/slides/20210709-useR2021_talk.html#28
 RUN add-apt-repository ppa:c2d4u.team/c2d4u4.0+ && apt-get update # R packages
-RUN apt-get install -y r-cran-jsonlite
-# shiny jsonlite ggplot2 htmltools remotes renv \
+# RUN apt-get install -y r-cran-jsonlite
 
 # RUN apt-get install -y r-cran-bspm 
 RUN apt-get install -y python3-apt python3-dbus python3-gi
-RUN apt-get install -y r-cran-bspm
+# RUN apt-get install -y r-cran-bspm
 # RUN apt install -y python3-apt r-cran-bspm
 # RUN apt-get install -y python3-{dbus,gi,apt} r-cran-bspm
 # r-cran-bspm ? bspm is in list.files(.libPaths()[1]
@@ -75,11 +74,14 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
         libcairo2-dev \
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts \
     && python3 -m pip --no-cache-dir install radian \
-    && install2.r --libloc "/usr/lib/R/site-library" --error --skipinstalled --ncpus -1 \
+    && install2.r --libloc "/usr/lib/R/site-library" \
+        --error --skipinstalled --ncpus -2 \
         languageserver httpgd \
         knitr rmarkdown quarto \
+        remotes jsonlite bspm \ 
     && rm -rf /tmp/downloaded_packages
     # https://hosting.analythium.io/how-to-set-up-quarto-with-docker-part-1-static-content/
+# shiny jsonlite ggplot2 htmltools remotes renv \
 
 
 # apt-get install gnupg wget && \
