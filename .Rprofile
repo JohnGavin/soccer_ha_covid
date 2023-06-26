@@ -40,7 +40,12 @@ options(
   # or rstan_options(auto_write = TRUE) ?
   auto_write = NULL # TRUE ? auto_write NOT auto.write?
   # rstan_options(auto_write = FALSE)
-) 
+  # bspm.version.check=FALSE # set in ~/Rprofile.site
+)
+# bspm::enable() set system-wide inc
+# enable it for the user
+# echo "bspm::enable()" | tee -a ~/Rprofile.site
+
 
 # cat /etc/R/Rprofile.site
 # eval({
