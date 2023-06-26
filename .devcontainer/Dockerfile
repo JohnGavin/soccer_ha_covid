@@ -42,7 +42,8 @@ RUN apt-get install -y python3-apt python3-dbus python3-gi
 # RUN apt-get install --assume-yes r-cran-rstan r-cran-shinystan
 # RUN apt-get install --assume-yes r-cran-brms
 RUN apt-get install --no-install-recommends --assume-yes r-cran-greta
-# RUN Rscript --vanilla -e ' install_greta_deps() '
+# installing miniconda, greta-env environment, python modules
+RUN Rscript --vanilla -e ' greta::install_greta_deps() '
 # RUN apt-get upgrade
 
 # RUN Rscript --vanilla -e ' install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", getOption("repos")), lib = "/usr/local/lib/R/site-library") '
@@ -107,4 +108,4 @@ USER rstudio
 # #   ./.Rhistory (not ~/.Rhistory) so .Rhistory is stored
 ENV R_HISTFILE "./.Rhistory" 
 
-# CMD ["r"] / CMD ["bash"] / CMD ["zsh"]
+# CMD ["echo 'library(greta)' | r"] / CMD ["bash"] / CMD ["zsh"]
