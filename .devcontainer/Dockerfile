@@ -75,7 +75,7 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
         libcairo2-dev \
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts \
     && python3 -m pip --no-cache-dir install radian \
-    && install2.r --error --skipinstalled --ncpus -1 \
+    && install2.r --libloc "/usr/lib/R/site-library" --error --skipinstalled --ncpus -1 \
         languageserver httpgd \
         knitr rmarkdown quarto \
     && rm -rf /tmp/downloaded_packages

@@ -1,2 +1,16 @@
-linters: linters_with_defaults() # see vignette("lintr")
+# see vignette("lintr")
 encoding: "UTF-8"
+linters: linters_with_defaults(
+    line_length_linter = line_length_linter(120L), 
+    commented_code_linter = NULL, # Commented code should be removed.
+    trailing_blank_lines_linter = NULL,
+    trailing_whitespace_linter = NULL,
+    semicolon_linter = allow_compound = TRUE 
+    # semicolon_linter = allow_trailing = FALSE
+  )
+exclusions: list(
+    "renv",
+    "inst/doc/creating_linters.R" = 1, 
+    "inst/example/bad.R", 
+    "tests/testthat/exclusions-test"
+  )
