@@ -3,13 +3,13 @@ FROM rocker/r-bspm:20.04
 # bspm in "/usr/local/lib/R/site-library" (not "/usr/lib/R/site-library")?
 
 # update indices
-RUN apt update -qq \
-     && apt install --yes --no-install-recommends git
+RUN apt-get update -qq \
+     && apt-get install --yes --no-install-recommends git
 ## install vscode Docker extension?
 
 # https://cloud.r-project.org/bin/linux/ubuntu/
 # install two helper packages
-RUN apt install --no-install-recommends software-properties-common dirmngr
+RUN apt-get install --no-install-recommends software-properties-common dirmngr
 
 # add the signing key (by Michael Rutter) for these repos
 # To verify key, run gpg --show-keys /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc 
@@ -22,17 +22,19 @@ RUN add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_r
 
 # https://enchufa2.github.io/bspm/slides/20210709-useR2021_talk.html#28
 RUN add-apt-repository ppa:c2d4u.team/c2d4u4.0+  # R packages
-RUN apt install -y r-cran-bspm python3-{dbus,gi,apt}
+RUN apt-get install -y r-cran-jsonlite
+RUN apt-get install -y r-cran-bspm 
+# RUN apt-get install -y python3-{dbus,gi,apt}
 # r-cran-bspm ? bspm is in list.files(.libPaths()[1]
 
 # installs into "/usr/lib/R/site-library" (not "/usr/local/lib/R/site-library")
 # https://enchufa2.github.io/bspm/slides/20210709-useR2021_talk.html#21
 #   cran2copr's CoprManager is just a branded version of bspm
-RUN apt install --no-install-recommends --assume-yes r-cran-tidyverse 
+# RUN apt-get install --no-install-recommends --assume-yes r-cran-tidyverse 
 # --no-install-recommends 
-RUN apt install --assume-yes r-cran-rstan 
-# RUN apt install --no-install-recommends --assume-yes r-cran-brms
-# RUN apt install --no-install-recommends --assume-yes r-cran-greta
+# RUN apt-get install --assume-yes r-cran-rstan 
+# RUN apt-get install --no-install-recommends --assume-yes r-cran-brms
+RUN apt-get install --no-install-recommends --assume-yes r-cran-greta
 
 # RUN Rscript --vanilla -e ' install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", getOption("repos")), lib = "/usr/local/lib/R/site-library") '
 # RUN Rscript --vanilla -e ' install.packages("brms", repos="https://cran.r-project.org", lib = "/usr/local/lib/R/site-library") '

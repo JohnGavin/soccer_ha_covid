@@ -28,7 +28,7 @@
 # options(bspm.sudo = NULL, mc.cores = NULL, auto_write = NULL)
 
 options(
-# https://community.rstudio.com/t/not-able-to-install-brms-rstan-package-on-linux-r-server/96249/2
+  # https://community.rstudio.com/t/not-able-to-install-brms-rstan-package-on-linux-r-server/96249/2
   #brms.backend = "cmdstanr", 
   # bspm: Bridge to System Package Manager
   # https://cran.r-project.org/web/packages/bspm/bspm.pdf
