@@ -109,10 +109,11 @@ USER rstudio
 # #   ./.Rhistory (not ~/.Rhistory) so .Rhistory is stored
 ENV R_HISTFILE "./.Rhistory" 
 
+# WARNING: postCreateCommand in devcontainer.json overrides CMD in dockerfile?
 # runtime (not RUN => image creation time)
 # CMD ["sudo service dbus --full-restart && echo 'library(greta) ; normal(0, 5)' | R -vanilla --no-save && bash"] 
 # CMD ["zsh"] 
 # CMD ["bash"]
 # CMD ["R -q --no-save"]
-CMD ["sudo service dbus --full-restart && r -i -p -l 'tidyverse'  "] 
+# CMD ["sudo service dbus --full-restart && r -i -p -l 'tidyverse'  "] 
 # -e 'greta::normal(0, 5)'
