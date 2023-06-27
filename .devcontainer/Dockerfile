@@ -34,7 +34,7 @@ RUN apt-get install -y python3-apt python3-dbus python3-gi
 RUN apt-get install --no-install-recommends --assume-yes r-cran-greta
 # installing miniconda, greta-env environment, python modules
 RUN Rscript --vanilla -e ' greta::install_greta_deps() '
-RUN Rscript --vanilla -e 'library(greta) ; normal(0, 5)'
+# RUN Rscript --vanilla -e 'library(greta) ; normal(0, 5)'
 # RUN apt-get upgrade
 
 # RUN Rscript --vanilla -e ' install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", getOption("repos")), lib = "/usr/local/lib/R/site-library") '
@@ -71,12 +71,12 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
         languageserver httpgd \
         knitr rmarkdown quarto \
         remotes docopt bspm \ 
-        jsonlite reticulate \
+        jsonlite reticulate renv \
     && rm -rf /tmp/downloaded_packages \
     # r-cran-bspm ? bspm is in list.files(.libPaths()[1]
     && mv -f /usr/local/lib/R/site-library/* /usr/lib/R/site-library
     # https://hosting.analythium.io/how-to-set-up-quarto-with-docker-part-1-static-content/
-# shiny jsonlite ggplot2 htmltools remotes renv \
+# shiny ggplot2 htmltools \
 
 # installs into "/usr/lib/R/site-library" (not "/usr/local/lib/R/site-library")
 # https://enchufa2.github.io/bspm/slides/20210709-useR2021_talk.html#21
@@ -86,8 +86,8 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
 
 # WARNING: RUN service after 'COPY library-scripts/*.sh' else service command not available?
 # RUN service --status-all
-RUN service dbus --full-restart
-RUN service --status-all
+#RUN service dbus --full-restart
+#RUN service --status-all
 
 
 # # VSCode R Debugger dependency. Install the latest release version from GitHub without using GitHub API.
@@ -100,7 +100,6 @@ RUN service --status-all
 # # See more details: https://github.com/REditorSupport/vscode-R/wiki/R-Session-watcher
 RUN echo 'if (interactive() && Sys.getenv("TERM_PROGRAM") == "vscode") source(file.path(Sys.getenv("HOME"), ".vscode-R", "init.R"))' >>"${R_HOME}/etc/Rprofile.site"
 
-
 USER rstudio
 # # savehistory is NA under radian ? 
 # #   WARNING: this might include sensitive data / passwords?
@@ -108,5 +107,7 @@ USER rstudio
 # #   ./.Rhistory (not ~/.Rhistory) so .Rhistory is stored
 ENV R_HISTFILE "./.Rhistory" 
 
-CMD ["sudo service dbus --full-restart && echo 'library(greta) ; normal(0, 5)' | r"] 
-# CMD ["bash"] / CMD ["zsh"]
+# runtime (not RUN => image creation time)
+CMD ["sudo service dbus --full-restart && echo 'library(greta) ; normal(0, 5)' | R --no-save && bash"] 
+# CMD ["zsh"] 
+# CMD ["bash"]
