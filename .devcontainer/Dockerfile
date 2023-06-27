@@ -32,6 +32,8 @@ RUN apt-get install -y python3-apt python3-dbus python3-gi
 # RUN apt-get install --assume-yes r-cran-rstan r-cran-shinystan
 # RUN apt-get install --assume-yes r-cran-brms
 RUN apt-get install --no-install-recommends --assume-yes r-cran-greta
+# Python '/home/rstudio/.local/share/r-miniconda/envs/greta-env/bin/python' was requested 
+#   but '/usr/bin/python3' was loaded instead (see reticulate::py_config() for more information) 
 # installing miniconda, greta-env environment, python modules
 RUN Rscript --vanilla -e ' greta::install_greta_deps() '
 # RUN Rscript --vanilla -e 'library(greta) ; normal(0, 5)'
@@ -108,6 +110,9 @@ USER rstudio
 ENV R_HISTFILE "./.Rhistory" 
 
 # runtime (not RUN => image creation time)
-CMD ["sudo service dbus --full-restart && echo 'library(greta) ; normal(0, 5)' | R --no-save && bash"] 
+# CMD ["sudo service dbus --full-restart && echo 'library(greta) ; normal(0, 5)' | R -vanilla --no-save && bash"] 
 # CMD ["zsh"] 
 # CMD ["bash"]
+# CMD ["R -q --no-save"]
+CMD ["sudo service dbus --full-restart && r -i -p -l 'tidyverse'  "] 
+# -e 'greta::normal(0, 5)'
