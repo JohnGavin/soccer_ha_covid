@@ -18,32 +18,23 @@ RUN apt-get install --no-install-recommends software-properties-common dirmngr
 # add the R 4.0 repo from CRAN -- adjust 'focal' to 'groovy' or 'bionic' as needed
 RUN add-apt-repository "deb https://cloud.r-project.org/bin/linux/ubuntu $(lsb_release -cs)-cran40/"
 # add the official CRAN R repository
-RUN add-apt-repository ppa:marutter/rrutter4.0 && apt update # R v4.0 and higher
-
+RUN add-apt-repository ppa:marutter/rrutter4.0 && apt-get update # R v4.0 and higher
 # https://enchufa2.github.io/bspm/slides/20210709-useR2021_talk.html#28
 RUN add-apt-repository ppa:c2d4u.team/c2d4u4.0+ && apt-get update # R packages
+
+RUN apt-get install -y python3-apt python3-dbus python3-gi
+# RUN apt-get install -y r-cran-bspm 
+# RUN apt-get install -y python3-{dbus,gi,apt} r-cran-bspm
 # RUN apt-get install -y r-cran-jsonlite
 
-# RUN apt-get install -y r-cran-bspm 
-RUN apt-get install -y python3-apt python3-dbus python3-gi
-# RUN apt-get install -y r-cran-bspm
-# RUN apt install -y python3-apt r-cran-bspm
-# RUN apt-get install -y python3-{dbus,gi,apt} r-cran-bspm
-# r-cran-bspm ? bspm is in list.files(.libPaths()[1]
-
-# installs into "/usr/lib/R/site-library" (not "/usr/local/lib/R/site-library")
-# https://enchufa2.github.io/bspm/slides/20210709-useR2021_talk.html#21
-#   cran2copr's CoprManager is just a branded version of bspm
-# CoprManager::disable() ; install.packages("car") # disable the CoprManager, so install.packages only works from source
-
-
 # RUN apt-get install --no-install-recommends --assume-yes r-cran-tidyverse 
-# --no-install-recommends 
+# removing --no-install-recommends doesnt help with rstan
 # RUN apt-get install --assume-yes r-cran-rstan r-cran-shinystan
 # RUN apt-get install --assume-yes r-cran-brms
 RUN apt-get install --no-install-recommends --assume-yes r-cran-greta
 # installing miniconda, greta-env environment, python modules
 RUN Rscript --vanilla -e ' greta::install_greta_deps() '
+RUN Rscript --vanilla -e 'library(greta) ; normal(0, 5)'
 # RUN apt-get upgrade
 
 # RUN Rscript --vanilla -e ' install.packages("rstan", repos = c("https://mc-stan.org/r-packages/", getOption("repos")), lib = "/usr/local/lib/R/site-library") '
@@ -74,21 +65,30 @@ RUN apt-get update && export DEBIAN_FRONTEND=noninteractive \
         libfontconfig1-dev \
         libcairo2-dev \
     && apt-get autoremove -y && apt-get clean -y && rm -rf /var/lib/apt/lists/* /tmp/library-scripts \
-    && python3 -m pip --no-cache-dir install radian \
+    && python3 -m pip --no-cache-dir install radian numpy scipy seaborn \
     && install2.r --libloc "/usr/lib/R/site-library" \
         --error --skipinstalled --ncpus -2 \
         languageserver httpgd \
         knitr rmarkdown quarto \
-        remotes jsonlite bspm \ 
-    && rm -rf /tmp/downloaded_packages
+        remotes docopt bspm \ 
+        jsonlite reticulate \
+    && rm -rf /tmp/downloaded_packages \
+    # r-cran-bspm ? bspm is in list.files(.libPaths()[1]
+    && mv -f /usr/local/lib/R/site-library/* /usr/lib/R/site-library
     # https://hosting.analythium.io/how-to-set-up-quarto-with-docker-part-1-static-content/
 # shiny jsonlite ggplot2 htmltools remotes renv \
 
+# installs into "/usr/lib/R/site-library" (not "/usr/local/lib/R/site-library")
+# https://enchufa2.github.io/bspm/slides/20210709-useR2021_talk.html#21
+#   cran2copr's CoprManager is just a branded version of bspm
+# CoprManager::disable() ; install.packages("car") # disable the CoprManager, so install.packages only works from source
 
-# apt-get install gnupg wget && \
-#   wget -qO- https://apt.pacha.dev/pacha_pubkey.asc | tee -a /etc/apt/trusted.gpg.d/apt_pacha_pubkey.asc && \
-#   echo "deb https://apt.pacha.dev ./" | tee /etc/apt/sources.list.d/pacha.list > /dev/null && \
-#   apt-get update
+
+# WARNING: RUN service after 'COPY library-scripts/*.sh' else service command not available?
+# RUN service --status-all
+RUN service dbus --full-restart
+RUN service --status-all
+
 
 # # VSCode R Debugger dependency. Install the latest release version from GitHub without using GitHub API.
 # # See https://github.com/microsoft/vscode-dev-containers/issues/1032
@@ -108,4 +108,5 @@ USER rstudio
 # #   ./.Rhistory (not ~/.Rhistory) so .Rhistory is stored
 ENV R_HISTFILE "./.Rhistory" 
 
-# CMD ["echo 'library(greta)' | r"] / CMD ["bash"] / CMD ["zsh"]
+CMD ["sudo service dbus --full-restart && echo 'library(greta) ; normal(0, 5)' | r"] 
+# CMD ["bash"] / CMD ["zsh"]
